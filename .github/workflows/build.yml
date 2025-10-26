@@ -13,18 +13,19 @@ jobs:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
       
-    - name: 📱 Setup Android SDK
-      uses: android-actions/setup-android@v2
-      
-    - name: 🐍 Setup Python
+    - name: 🐍 Setup
       run: |
+        sudo apt-get update
+        sudo apt-get install -y openjdk-11-jdk python3-pip
         pip install buildozer cython
         
-    - name: 🏗️ Build
+    - name: 🏗️ Force build with older tools
       run: |
-        buildozer android debug
+        buildozer android clean
+        buildozer android debug 2>&1 | tail -20
         
     - name: 📦 Upload APK
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: Spotify-APK
