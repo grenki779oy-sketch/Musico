@@ -1,7 +1,7 @@
 [app]
-title = My App
-package.name = myapp
-package.domain = com.example
+title = Spotify Premium
+package.name = spotifypremium
+package.domain = com.spotify
 source.dir = .
 source.main = main.py
 version = 1.0
@@ -11,3 +11,6 @@ android.api = 33
 android.minapi = 21
 android.archs = arm64-v8a
 android.permissions = INTERNET
+android.signed_apk = True
+icon.filename = assets/icon.png
+p4a.branch = master
