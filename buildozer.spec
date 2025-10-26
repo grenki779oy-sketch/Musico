@@ -15,3 +15,4 @@ android.release_artifact = .apk
 android.signed_apk = True
 icon.filename = assets/icon.png
 p4a.branch = master
+android.accept_sdk_license = True
