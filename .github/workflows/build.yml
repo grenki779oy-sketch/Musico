@@ -7,16 +7,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Используем старую версию где есть sdkmanager
+    runs-on: ubuntu-latest
     
     steps:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
       
-    - name: 🐍 Setup
+    - name: 📱 Setup Android SDK
+      uses: android-actions/setup-android@v2
+      
+    - name: 🐍 Setup Python
       run: |
-        sudo apt-get update
-        sudo apt-get install -y openjdk-11-jdk python3-pip
         pip install buildozer cython
         
     - name: 🏗️ Build
