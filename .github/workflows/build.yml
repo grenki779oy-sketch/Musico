@@ -1,57 +1,16 @@
-name: Build APK
-
-on:
-  push:
-    branches: [ main, master ]
-  workflow_dispatch:
-
+name: Build Spotify APK
+on: [push]
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    
+    runs-on: ubuntu-latest
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 🐍 Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: 📦 Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          git zip unzip openjdk-11-jdk python3-pip \
-          autoconf libtool pkg-config zlib1g-dev \
-          libncurses5-dev libncursesw5-dev \
-          cmake libffi-dev libssl-dev wget
-        
-    - name: 🔧 Install Buildozer
-      run: |
-        pip install buildozer
-        pip install cython==0.29.33
-        
-    - name: 📱 Setup Android SDK
-      run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
-        mkdir -p ~/.android/cmdline-tools
-        unzip commandlinetools-linux-8512546_latest.zip -d ~/.android/cmdline-tools/
-        mv ~/.android/cmdline-tools/cmdline-tools ~/.android/cmdline-tools/latest
-        
-    - name: ✅ Accept Android licenses
-      run: |
-        yes | ~/.android/cmdline-tools/latest/bin/sdkmanager --licenses --sdk_root=/usr/local/lib/android/sdk || true
-        
-    - name: 🏗️ Build APK
-      run: |
+    - uses: actions/checkout@v4
+    - run: |
+        sudo apt update
+        sudo apt install -y python3-pip openjdk-11-jdk
+        pip3 install buildozer
         buildozer android debug
-        
-    - name: 📤 Upload APK
-      uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v4
       with:
-        name: Musico-APK
+        name: Spotify-APK
         path: bin/*.apk
-        retention-days: 30
