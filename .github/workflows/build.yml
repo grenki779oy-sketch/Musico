@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Используем старую версию
+    runs-on: ubuntu-22.04
     
     steps:
     - name: 📥 Checkout code
@@ -37,9 +37,13 @@ jobs:
         mkdir -p ~/.android
         touch ~/.android/repositories.cfg
         wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
-        unzip commandlinetools-linux-8512546_latest.zip -d ~/.android/
-        mv ~/.android/cmdline-tools ~/.android/cmdline-tools/latest
-        yes | ~/.android/cmdline-tools/latest/bin/sdkmanager --licenses --sdk_root=/usr/local/lib/android/sdk
+        mkdir -p ~/.android/cmdline-tools
+        unzip commandlinetools-linux-8512546_latest.zip -d ~/.android/cmdline-tools/
+        mv ~/.android/cmdline-tools/cmdline-tools ~/.android/cmdline-tools/latest
+        
+    - name: ✅ Accept Android licenses
+      run: |
+        yes | ~/.android/cmdline-tools/latest/bin/sdkmanager --licenses --sdk_root=/usr/local/lib/android/sdk || true
         
     - name: 🏗️ Build APK
       run: |
